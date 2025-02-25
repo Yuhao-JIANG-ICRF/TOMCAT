@@ -1,5 +1,5 @@
 #!/bin/sh
-# Zhangwei
+
 rm output/*
 cd output/
 
