@@ -1,0 +1,12 @@
+#!/bin/sh
+# Zhangwei
+rm output/*
+cd output/
+
+../TOMCAT.out < ../input/Input.dat  
+../PrepPlot.out < ./Input_PrepPlotCD_self_generated.dat
+
+cd ..
+#rm Input_PrepPlotCD_self_generated.dat  
+#rm CurrentsFile CurrentDrive_Main_Output.dat CurrentDrive_Output4Ernesto.dat 
+#rm temporarynames temporarynames2
