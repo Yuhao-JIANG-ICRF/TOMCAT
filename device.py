@@ -1,16 +1,19 @@
 import numpy as np
 
+'''
+  'Device name': (minor radius; major radius; magnetic axis)
+'''
 parameter_dict = {    
     'CFEDR': (2.5, 7.8, 8.2),
     'CFETR': (2.5, 7.8, 8.2),
-    'WEST': (0.43, 2.5, 2.3)
+    'WEST': (0.43, 2.5, 2.5)
     # add new device here
 }
 
 species_dict = {
-    'Li' : '$^7$Li',
-    'He3': '$^3$He',
-    'He4': '$^4$He'
+    'Li' : '^7Li',
+    'He3': '^3He',
+    'He4': '^4He'
 }
 
 
