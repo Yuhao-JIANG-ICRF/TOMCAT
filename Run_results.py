@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from device import get_model_data
 import gc as gc
 gc.collect()    #release ram
-plt.close('all')     #close all figures
+#plt.close('all')     #close all figures
 
 # %%
 'Basic parameters'
