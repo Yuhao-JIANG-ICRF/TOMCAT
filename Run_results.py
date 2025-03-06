@@ -24,9 +24,10 @@ plt.close('all')     #close all figures
 'Basic parameters'
 
 #pre = 'output/'
-pre = 'output/1para_scan/1/'
-UNDERSCORE='_'       #For MAC
+pre = 'output/1para_scan/13/'
+
 pref = 'output/'     #Save figures
+UNDERSCORE='_'       #For MAC
 '''
 if iuseR = 0 , the central is at 0,
 if iuseR = 1 , the central is at R0
@@ -82,7 +83,7 @@ freq = aux80[2]/1e6   #ICRF frequency [MHz]
 Ntor = aux80[1]   #
 
 xn = aux25[:,0];
-n  = aux25[:,3:3+Ns]/1e19;       #Density for n species
+n  = aux25[:,3:3+Ns];       #Density for n species
 T  = aux25[:,3+Ns:3+2*Ns]/1e3;   #Temp for n species 
 
 xE        = aux29[:,0];
@@ -193,7 +194,7 @@ YL = plt.ylim()
 plt.xlim(xmax-a,xmax)
 plt.ylim(0,YL[1])
 plt.title('')
-plt.ylabel('Density [1e19$m^{-3}$]')
+plt.ylabel('Density [$m^{-3}$]')
 
 'Temp'
 plt.subplot(2,3,4)
@@ -284,7 +285,7 @@ for i in range(Ns):
         
 
 plt.title('')
-plt.ylabel('Density [1e19$m^{-3}$]')
+plt.ylabel('Density [$m^{-3}$]')
 
 'Temp'
 plt.subplot(1,2,2)

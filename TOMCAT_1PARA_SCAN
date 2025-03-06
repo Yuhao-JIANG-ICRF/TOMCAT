@@ -5,39 +5,43 @@ cd output
 mkdir -p 1para_scan
 rm -rf 1para_scan/*
 
-Z=1
-
-b_start=0.005
-b_end=0.10
-b_step=0.005
-
+Z=1  #Hydrogen
+####-----
+b_start=20
+b_end=30
+b_step=2
+####-----
 b_values=$(awk "BEGIN {for(i=$b_start;i<=$b_end;i+=$b_step) print i}")
 
 pairs=()
 
 for b in $b_values; do
-    a=$(echo "scale=4; 1 - $Z * $b" | bc)
-    pairs+=("0$a, $b,")
+    pairs+=("$b,")
+    
+####Con_scan####
+    #a=$(echo "scale=4; 1 - $Z * $b" | bc)#
+    #pairs+=("0$a, $b,")#
 done
 
 
 for idx in "${!pairs[@]}"; do
-    #change input file
+#####change input file####
     pair="${pairs[$idx]}"   
-    sed -i "s|concentr=.*|concentr=${pair}|" ../input/Input.dat
+    sed -i "s|ntor=.*|ntor=${pair}|" ../input/Input.dat
+    #sed -i "s|concentr=.*|concentr=${pair}|" ../input/Input.dat#
 
-    #Run TOMCAT
+#####Run TOMCAT####
     ../tomcat < ../input/Input.dat  
     ../PrepPlot < ./Input_PrepPlotCD_self_generated.dat
      
-    #save results 
+#####save results#### 
     target_folder="1para_scan/$((idx+1))"
     mkdir -p "$target_folder"
     find . -maxdepth 1 -type f -exec mv {} "$target_folder" \;
     
-    sleep 2
-    echo "concentr=${pair} Run TOMCAT，Results move to $target_folder"
-    sleep 1
+    echo "Ntor=${pair} Run TOMCAT，Results move to $target_folder"
+    #echo "concentr=${pair} Run TOMCAT，Results move to $target_folder"#
+    sleep 1.5
 done
 
 echo "Simulations finished"

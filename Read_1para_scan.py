@@ -26,6 +26,8 @@ plt.close('all')     #close all figures
 'Basic parameters'
 
 pre = 'output/1para_scan'
+
+pref = 'output/'     #Save figures
 UNDERSCORE='_'       #For MAC
 
 if os.path.exists(pre):
@@ -84,18 +86,19 @@ for i in range(Ncase):
 P_sum = np.array(P_sum)
 #%%
 lists = {
-    'B_0'             : (B0,   '[T]'),
-    'f_{ICRF}'       : (freq, '[MHz]'),
-    'N_{tor}'         : (Ntor, ''),
-    name_species[-1]  : (con,  '[%]') 
+    'B_0'             : (B0,   '[T]', 'B0'),
+    'f_{ICRF}'       : (freq, '[MHz]','freq'),
+    'N_{tor}'         : (Ntor, '','Ntor'),
+    'X[{name_species[-1]}]'  : (con,  '[%]','concentr') 
     }
 ftitle = f'{name}:'
 ftitle1 = ''
 ftitle2 = ''
 for key, lst in lists.items():
     arr = np.array(lst[0])
-    if np.all(arr == arr.flat[0]):
-        if key != name_species[-1]:
+    arr = arr.reshape(arr.shape[0],-1)
+    if np.all(np.all(arr == arr[0, :],axis=1)):
+        if key != 'X[{name_species[-1]}]' :
             ftitle = ftitle+f'${key}$ = {lst[0][0]} {lst[1]}, '
         else:
             for i in range(Ns-1):
@@ -107,7 +110,10 @@ for key, lst in lists.items():
                     ftitle2 = ftitle2 + f': {conc[i]}%'
             ftitle = ftitle + '\n' + ftitle1 +' = '+ftitle2 
     else:
-        xlabel = 'X[${%s}$]' % key + f'{lst[1]}'
+        xlabel = '${%s}$' % key + lst[1]
+        minarr = np.min(arr)
+        maxarr = np.max(arr)
+        figname = lst[2]+f'_scan:{minarr}-{maxarr}'
         xx = arr[:,-1]
  
     
@@ -151,3 +157,21 @@ print(f'The maximum of the total power absorption is Case {Mtot}:')
 print(f'{xx[Mtot]}, $P_{{tot}}$ = {P_sum[Mtot,0]:.1f}%')
 print(f'The maximum of the ions power absorption is Case {Mi}:')
 print(f'{xx[Mi]}, $P_{{ions}}$ = {Sumi[Mi]:.1f}%')
+
+import os
+
+
+folder = pref+name+'/1para_scan/'
+for i in range(Ns-2):
+    folder = folder + name_species[i+1]
+    
+folder = folder+'('+name_species[-1]+')/'
+print(folder)
+    
+if not os.path.exists(folder):
+    os.makedirs(folder)   # create the folder if it does't exis
+
+filename = f'{figname}.png'
+filepath = os.path.join(folder, filename)
+plt.savefig(filepath)
+   
