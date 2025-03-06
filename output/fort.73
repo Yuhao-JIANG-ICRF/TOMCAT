@@ -1,0 +1,14 @@
+ *************************************************
+  
+
+ (Complex) Total Absorption   =    7.4711685E-01  -2.9997092E-02
+ (Complex) Flux at left  edge =    2.2054436E-01  -6.7890621E-03
+ (Complex) Flux at right edge =   9.6763624E-01  -3.6761498E-02
+
+ Re(Flux[xright])-Re(Flux[xleft]) =   0.74709188689976647     
+ Relative error on (real*8) power balance  =   -1.6707128930546823E-005
+ (complex) Absorption of species  e         =    3.700E-02  -4.745E+01
+ (complex) Absorption of species  D         =    3.866E-02   1.936E+01
+ (complex) Absorption of species  H         =    6.715E-01  -7.127E-01
+  
+ *************************************************

@@ -1,0 +1,32 @@
+  &PLOTIN
+   numcase=1,
+  &END
+     
+ &CASEDATA
+ TITLEA =  'TEST'                       ,
+ TITLEB =  '  '                         ,
+ TITLEC =  'Self generated CD input'    ,
+ nspeci=3,
+ ntor= 3.000E+01,
+ xkap= 1.400E+00,
+ del0=-5.000E-02,
+ delt= 8.000E-01,
+ Zeff= 1.000E+00,
+ Ptot= 1.000E+00,
+ EmaxeV= 1.000E+06,
+ B0= 3.657E+00,
+ lambda= 0.000E+00,
+ Zion= 1.000E+00, 1.000E+00, 0.000E+00, 0.000E+00, 0.000E+00,
+ 0.000E+00, 0.000E+00, 0.000E+00,
+ Aion= 2.000E+00, 1.000E+00, 0.000E+00, 0.000E+00, 0.000E+00,
+ 0.000E+00, 0.000E+00, 0.000E+00,
+ conc= 9.700E-01, 3.000E-02, 0.000E+00, 0.000E+00, 0.000E+00,
+ 0.000E+00, 0.000E+00, 0.000E+00,
+ itail=1,
+ ifast=1,
+ frek= 5.550E+07,
+ ap= 4.300E-01,
+ R0= 2.500E+00,
+ ILANDAU=1,
+ ISAME=0,
+ &END
