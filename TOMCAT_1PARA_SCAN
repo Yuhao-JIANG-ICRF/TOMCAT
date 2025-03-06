@@ -5,10 +5,10 @@ cd output
 mkdir -p 1para_scan
 rm -rf 1para_scan/*
 
-Z=3
+Z=1
 
 b_start=0.005
-b_end=0.02
+b_end=0.10
 b_step=0.005
 
 b_values=$(awk "BEGIN {for(i=$b_start;i<=$b_end;i+=$b_step) print i}")
@@ -40,6 +40,7 @@ for idx in "${!pairs[@]}"; do
     sleep 1
 done
 
+echo "Simulations finished"
 cd ..
 
 

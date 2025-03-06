@@ -18,13 +18,15 @@ import matplotlib.pyplot as plt
 from device import get_model_data
 import gc as gc
 gc.collect()    #release ram
-#plt.close('all')     #close all figures
+plt.close('all')     #close all figures
 
 # %%
 'Basic parameters'
 
-pre = 'output/'
+#pre = 'output/'
+pre = 'output/1para_scan/1/'
 UNDERSCORE='_'       #For MAC
+pref = 'output/'     #Save figures
 '''
 if iuseR = 0 , the central is at 0,
 if iuseR = 1 , the central is at R0
@@ -212,7 +214,7 @@ plt.ylabel('Temp [keV]')
 
 'Disp root'
 plt.subplot(2,3,2)
-plt.plot(xP,disp_roots)
+plt.plot(xP,disp_roots,label='Fast Wave')
 YL = plt.ylim()
 XL = np.max(xn)
 #plt.plot([XL,XL],[0,YL[1]],'k--')
@@ -332,7 +334,7 @@ plt.subplots_adjust(left=0.1,right=0.9,
                     wspace=0.3)
 
 'Power absorption'
-plt.plot(xP,Ptot,'k--',label=f'$P_{{total}}$:{Ptot_sum[-1,0]:.0f}%')
+plt.plot(xP,Ptot,'k--',label=f'$Total$:{Ptot_sum[-1,0]:.0f}%')
 for i in range(Ns):  
         plt.plot(xP,Pabs[:,i],color=colors[i],label=f'${name_species[i]}$:{Pabs_sum[-1,i]:.0f}%')
 
@@ -374,7 +376,8 @@ plt.show
 #%% SAVE figures
 import os
 
-folder = pre+name+'/'
+
+folder = pref+name+'/'
 for i in range(Ns-2):
     folder = folder + name_species[i+1]
     

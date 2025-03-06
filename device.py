@@ -16,6 +16,94 @@ species_dict = {
     'He4': '^4He'
 }
 
+#%%
+def get_device_input(name):
+    global N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont
+    name = name.lower()
+    if name == 'west':
+        N0 = 6.02e19
+        N1 = 2.25e19
+        ap = 0.43
+        R0 = 2.5
+        B0 = 3.657
+        xkap = 1.4
+        del0 = 0.05
+        delt = 0.8
+        T0e = 1.609e3
+        T0i = 1.37e3
+        T1 = 0.25e3
+        exponn = 1.0
+        expont = 1.5
+        
+        pre = 'input/WEST/input_file/'
+        import netCDF4
+        
+        global  RRR0, ZZZ0, Rsep0, Zsep0, rho0, Nprf0, TprfE0, TprfI0
+        global  RRR1, ZZZ1, Rsep1, Zsep1, rho1, Nprf1, TprfE1, TprfI1
+        # - Reference - #
+        d0 = netCDF4.Dataset(pre+'west_59141_t6000ms_exp.inp.nc')
+        # - Analytical from eve- #
+        d1 = netCDF4.Dataset(pre+'west_55605_analytical.inp.nc')
+
+        nsgpls0 = d0.dimensions['nsgpls'].size
+        RR0 = d0.variables['sRR'][:, :, 0]
+        ZZ0 = d0.variables['sZZ'][:, :, 0]
+        sg0 = d0.variables['sg'][:nsgpls0]
+        FT0 = d0.variables['sFT'][:nsgpls0, 0]
+        psi0 = d0.variables['spsi'][:nsgpls0, 0]
+        ne0 = d0.variables['sns'][0, :nsgpls0, 0]
+        Te0 = d0.variables['sTs'][0, :nsgpls0, 0]
+        Ti0 = d0.variables['sTs'][1, :nsgpls0, 0]
+
+        nsgpls1 = d1.dimensions['nsgpls'].size
+        RR1 = d1.variables['sRR'][:, :, 0]
+        ZZ1 = d1.variables['sZZ'][:, :, 0]
+        sg1 = d1.variables['sg'][:nsgpls1]
+        FT1 = d1.variables['sFT'][:nsgpls1, 0]
+        psi1 = d1.variables['spsi'][:nsgpls1, 0]
+        ne1 = d1.variables['sns'][0, :nsgpls1, 0]
+        Te1 = d1.variables['sTs'][0, :nsgpls1, 0]
+        Ti1 = d1.variables['sTs'][1, :nsgpls1, 0]
+        
+        RRR0 = RR0[nsgpls0, :]
+        ZZZ0 = ZZ0[nsgpls0, :]
+        RRR1 = RR1[nsgpls1, :]
+        ZZZ1 = ZZ1[nsgpls1, :]  
+        
+        Rsep0 = RR0[0,0] 
+        Zsep0 = ZZ0[0,0] 
+        Rsep1 = RR1[0,0] 
+        Zsep1 = ZZ1[0,0] 
+        
+        
+        rho0 = sg0
+        Nprf0 = ne0
+        rho1 = sg1
+        Nprf1 = ne1
+        TprfE0 = Te0
+        TprfE1 = Te1
+        TprfI0 = Ti0
+        TprfI1 = Ti1
+      
+        
+    elif name == 'cfedr':
+        N0 = 6.02e19
+        N1 = 2.25e19
+        ap = 0.43
+        R0 = 7.8
+        B0 = 3.657
+        xkap = 1.4
+        del0 = 0.05
+        delt = 0.8
+        T0e = 1.609e3
+        T0i = 1.37e3
+        T1 = 0.25e3
+        exponn = 1.0
+        expont = 1.5
+        
+    else:
+        raise ValueError("unknow device: {}".format(name))
+
 
 # %%
 
@@ -67,67 +155,6 @@ def get_model_data(pre: str):
         )
 
     return device_name, num_species, name_species, concentrations, minor_radius, major_radius, position_axis
-
-
-
-
-# %%
-
-# filename = pre + 'fort.70'
-# with open(filename, "r") as f:
-#     lines = f.readlines()
-
-# # case = None
-# # num_species = None
-# # species = None
-# # concentrations = None
-
-# for i, line in enumerate(lines):
-#     line = line.strip()
-#     if line.startswith("Name of the case:"):
-#         device_name = lines[i+1].strip()
-#     elif line.startswith("Number of species:"):
-#         num_species = int(lines[i+1].strip())
-#     elif line.startswith("Names of the species:"):
-#         species = lines[i+1].split()
-#     elif line.startswith("Concentrations:"):
-#         conc_line = lines[i+1].strip()
-#         concentrations = np.array([float(val) for val in conc_line.split()])*100
-
-# name_species = [species_dict.get(item, item) for item in species]
-
-# print("Device name:", device_name)
-# print("Number of species:", num_species)
-# print("Species:", name_species)
-# print("Concentrations:", concentrations,'%')
-
-
-# def get_tokamak_parameters(device_name: str) -> tuple[float, float]:
-#     """
-#     Retrieve tokamak geometric parameters
-    
-#     Returns:
-#         tuple: (minor_radius[m], major_radius[m])
-    
-#     Raises:
-#         ValueError: For unsupported device names
-    
-#     Example:
-#         >>> a, R0 = get_tokamak_parameters('CFEDR')
-#         >>> print(f"Minor radius: {a}, Major radius: {R0}")
-#         Minor radius: 2.5, Major radius: 7.8
-#     """
-    
-
-    
-#     if device_name in parameter_db:
-#         return parameter_db[device_name]
-#     else:
-#         available_devices = ", ".join(parameter_db.keys())
-#         raise ValueError(
-#             f"Unsupported device: '{device_name}'. "
-#             f"Valid options: {valid_devices}"
-#         )
 
 
 

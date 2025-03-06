@@ -21,30 +21,24 @@ gc.collect()    #release ram
 plt.close('all')     #close all figures
 
 # %%
+import device
+name = 'WEST'
+device.get_device_input(name)
+from device import N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont
 
 
-namecase='WEST'
-N0=6.02e19
-N1=2.25e19
-ap=0.43
-R0=2.5
-B0=3.657
-xkap=1.4
-del0=0.05
-delt=0.8
-T0e=1.609e3
-T0i=1.37e3
-T1=0.25e3
-exponn=1.0
-expont=1.5
+# ZZZ0, RRR0, Rsep0,rho0, Nprf0, TprfE0,TprfI0
+# %%
+nt = 200
+nr = 10
+na = 200
+theta = np.linspace(0, 2*np.pi-0.001, nt)
+rho=np.linspace(0, ap, nr)
+r = np.linspace(0, ap, na)
+R = np.zeros((nr,nt))
+Z = np.zeros((nr,nt))
 
-theta = np.linspace(0, 2*np.pi-0.001, 200)
-rho=np.linspace(0, ap, 20)
-R = np.zeros((20,200))
-Z = np.zeros((20,200))
-
-for k in range (0,20):   
-    
+for k in range (0,nr):      
     shaf = del0 *(1-(rho[k]/ap)**2)   
     
     for it in range (0,200):
@@ -55,17 +49,28 @@ Rsep = R0 + ap*np.cos(theta+delt*ap*np.sin(theta))
 Zsep = xkap * ap * np.sin(theta)
         
 fig = plt.figure(1,figsize=(5, 8))
-for k in range (0,20):
-    plt.plot(R[k,:],Z[k,:],'--')
 
-plt.plot(Rsep,Zsep,'k:')
-plt.scatter(R0,0)
 
-#fig = plt.figure(1)
-#fig.axis('equal')
+plt.plot(device.RRR0, device.ZZZ0, color = 'b', label = 'Ref',linewidth=3) 
+plt.plot(device.Rsep0, device.Zsep0, 'x', color = 'b',linewidth=3) 
+plt.plot(device.RRR1, device.ZZZ1, color = 'r', label = 'Ana-EVE') 
+plt.plot(device.Rsep0, device.Zsep0, 'x', color = 'r') 
+
+for k in range (0,nr-1):
+    plt.plot(R[k,:],Z[k,:],'k--')
+
+plt.plot(R[nr-1,:],Z[nr-1,:],'k', label = 'Ana-TOMCAT')
+plt.scatter(R[0,0],0,color='red')
+
+plt.xlabel(r'$\mathregular{R\ [m]}$') 
+plt.ylabel(r'$\mathregular{Z\ [m]}$')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+
 fig.gca().axis('equal')
 
-r = np.linspace(0, ap, 200)
+#%%
 def nt(A0, A1, expon):
     return  (A0-A1)*(1-(r/ap)**2)**expon + A1
 
@@ -78,12 +83,47 @@ plt.subplots_adjust(left=0.1,right=0.9,
                     wspace=0.3)
 
 plt.subplot(1,2,1)
-plt.plot(r,Nprf,'b')
+plt.plot(r,Nprf,'g',label='$n_e$')
+
+YL = plt.ylim()
+plt.ylim(0,YL[1])
+plt.xlabel(r'$\rho$')
+plt.ylabel(r'$\mathregular{n_e\ [m^{-3}]}$')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
 
 plt.subplot(1,2,2)
-plt.plot(r,TprfE,'b',label='$T_e$')
-plt.plot(r,TprfI,'r',label='$T_i$')
+plt.plot(r,TprfE/1000,'g',label='$T_e$')
+plt.plot(r,TprfI/1000,'g--',label='$T_i$')
 
+YL = plt.ylim()
+plt.ylim(0,YL[1])
+plt.xlabel(r'$\rho$')
+plt.ylabel(r'$\mathregular{T\ [eV]}$')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+#%%
+fig = plt.figure(figsize = (6.4, 2.92))
+ax = fig.subplots(1, 1)
+ax.plot(device.rho0, device.Nprf0, 'b', label = 'Ref',linewidth=3) 
+ax.plot(device.rho1, device.Nprf1, 'r', label = 'Ana-EVE')
+ax.set_xlabel(r'$s_p$')
+ax.set_ylabel(r'$\mathregular{n_e\ [m^{-3}]}$')
+ax.legend()
+ax.grid(True)
+plt.tight_layout()
 
+fig = plt.figure(figsize = (6.4, 2.92))
+ax = fig.subplots(1, 1)
+ax.plot(device.rho0, device.TprfE0, 'b', label = 'Ref $T_e$',linewidth=3) 
+ax.plot(device.rho1, device.TprfE1, 'r', label = 'Ana-EVE $T_e$')
 
-
+ax.plot(device.rho0, device.TprfI0, 'b--', label = 'Ref $T_i$',linewidth=3) 
+ax.plot(device.rho1, device.TprfI1, 'r--', label = 'Ana-EVE $T_i$')
+ax.set_xlabel(r'$s_p$')
+ax.set_ylabel(r'$\mathregular{T\ [eV]}$')
+ax.legend()
+ax.grid(True)
+plt.tight_layout()
