@@ -6,7 +6,7 @@ import numpy as np
 parameter_dict = {    
     'CFEDR': (2.5, 7.8, 8.2),
     'CFETR': (2.5, 7.8, 8.2),
-    'WEST': (0.43, 2.5, 2.5)
+    'WEST': (0.43, 2.5, 2.5+0.05)
     # add new device here
 }
 
@@ -28,12 +28,12 @@ def get_device_input(name):
         B0 = 3.657
         xkap = 1.4
         del0 = 0.05
-        delt = 0.8
+        delt = 0.3 
         T0e = 1.609e3
         T0i = 1.37e3
         T1 = 0.25e3
-        exponn = 1.0
-        expont = 1.5
+        exponn = 0.3
+        expont = 1.0
         
         pre = 'input/WEST/input_file/'
         import netCDF4

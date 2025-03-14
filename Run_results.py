@@ -6,7 +6,7 @@ Created on Wed Feb 19 10:33:13 2025
 @author: YJ281217
 """
 # %%
-## cleaning in TOMCAT
+## cleaning in SPYDER
 get_ipython().magic('reset -f')
 get_ipython().magic('clear')
 ##
@@ -23,8 +23,8 @@ plt.close('all')     #close all figures
 # %%
 'Basic parameters'
 
-#pre = 'output/'
-pre = 'output/1para_scan/13/'
+pre = 'output/'
+#pre = 'output/1para_scan/3/'
 
 pref = 'output/'     #Save figures
 UNDERSCORE='_'       #For MAC
@@ -174,7 +174,7 @@ plt.rcParams.update({
     'axes.grid':True
     })
 # %%
-plt.figure(1,figsize=(10, 5))
+plt.figure(1,figsize=(11, 7))
 plt.subplots_adjust(left=0.1,right=0.9,
                     wspace=0.3)
 
@@ -224,7 +224,6 @@ plt.xlim(-a,a)
 plt.ylim(YL[0],YL[1])
 
 plt.title('')
-plt.xlabel('r')
 plt.ylabel('Disp roots')
 
 'Poynting Flux'

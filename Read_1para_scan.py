@@ -7,12 +7,13 @@ Created on Thu Mar  6 09:48:23 2025
 """
 
 # %%
-## cleaning in TOMCAT
+## cleaning in SPYDER
 get_ipython().magic('reset -f')
 get_ipython().magic('clear')
 ##
-globals().clear()
+
 # %%
+globals().clear()
 'import Library or Package and release ram & close fig' 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,7 +21,7 @@ from device import get_model_data
 import gc as gc
 import os
 gc.collect()    #release ram
-plt.close('all')     #close all figures
+#plt.close('all')     #close all figures
 
 # %%
 'Basic parameters'
@@ -89,7 +90,7 @@ lists = {
     'B_0'             : (B0,   '[T]', 'B0'),
     'f_{ICRF}'       : (freq, '[MHz]','freq'),
     'N_{tor}'         : (Ntor, '','Ntor'),
-    'X[{name_species[-1]}]'  : (con,  '[%]','concentr') 
+    f'X[{name_species[-1]}]'  : (con,  '[%]','concentr') 
     }
 ftitle = f'{name}:'
 ftitle1 = ''
@@ -110,7 +111,7 @@ for key, lst in lists.items():
                     ftitle2 = ftitle2 + f': {conc[i]}%'
             ftitle = ftitle + '\n' + ftitle1 +' = '+ftitle2 
     else:
-        xlabel = '${%s}$' % key + lst[1]
+        xlabel = '$%s$' % key + lst[1]
         minarr = np.min(arr)
         maxarr = np.max(arr)
         figname = lst[2]+f'_scan:{minarr}-{maxarr}'
