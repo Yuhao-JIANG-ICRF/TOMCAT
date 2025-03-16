@@ -19,6 +19,9 @@ species_dict = {
 #%%
 def get_device_input(name):
     global N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont
+    global  RRR0, ZZZ0, Rsep0, Zsep0, rho0, Nprf0, TprfE0, TprfI0, FWR, FWZ
+    FWR = []
+    FWZ = []
     name = name.lower()
     if name == 'west':
         N0 = 6.02e19
@@ -36,9 +39,7 @@ def get_device_input(name):
         expont = 1.0
         
         pre = 'input/WEST/input_file/'
-        import netCDF4
-        
-        global  RRR0, ZZZ0, Rsep0, Zsep0, rho0, Nprf0, TprfE0, TprfI0
+        import netCDF4    
         global  RRR1, ZZZ1, Rsep1, Zsep1, rho1, Nprf1, TprfE1, TprfI1
         # - Reference - #
         d0 = netCDF4.Dataset(pre+'west_59141_t6000ms_exp.inp.nc')
@@ -87,19 +88,45 @@ def get_device_input(name):
       
         
     elif name == 'cfedr':
-        N0 = 6.02e19
-        N1 = 2.25e19
-        ap = 0.43
+        N0 = 14e19
+        N1 = 4e19
+        ap = 2.5
         R0 = 7.8
-        B0 = 3.657
-        xkap = 1.4
-        del0 = 0.05
-        delt = 0.8
-        T0e = 1.609e3
-        T0i = 1.37e3
-        T1 = 0.25e3
-        exponn = 1.0
-        expont = 1.5
+        B0 = 6.3
+        xkap = 1.8
+        del0 = 0.40
+        delt = 0.25
+        T0e = 30e3
+        T0i = 24e3
+        T1 = 0.8e3
+        exponn = 0.7
+        expont = 1.3
+        
+        pre = 'input/CFEDR/CFEDR_Conventional_H_mode_V1_20240522/'
+        from scipy.io import loadmat
+        from read_gfile_func import read_gfile_func
+
+        # Load MAT file with better handling of MATLAB structs
+        pre = 'input/CFEDR/CFEDR_Conventional_H_mode_V1_20240522/'
+        data = loadmat(pre+'CFETR_PROFILES.mat', squeeze_me=True, struct_as_record=False)  
+        # Access MATLAB struct fields using dot notation
+        ELECTRON = data['ELECTRON']
+        IONS_1 = data['IONS_1']
+        rho0 = data['rho']
+        Nprf0 = ELECTRON.density
+        TprfE0 = ELECTRON.temperature*1000
+        TprfI0 = IONS_1.temperature*1000
+        # read data from gfile
+        sfile = 'input/CFEDR/CFEDR_Conventional_H_mode_V1_20240522/gfile_efit'
+        gdata, ireadok = read_gfile_func(sfile, 12, 0, 0)
+        gvar = gdata
+        
+        RRR0 = gvar['rbbbs']
+        ZZZ0 = gvar['zbbbs']        
+        Rsep0 = gvar['rmaxis']
+        Zsep0 = gvar['zmaxis']
+        FWR = gvar['xlim']
+        FWZ = gvar['ylim']
         
     else:
         raise ValueError("unknow device: {}".format(name))

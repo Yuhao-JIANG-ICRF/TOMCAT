@@ -24,6 +24,8 @@ plt.close('all')     #close all figures
 import device
 name = 'WEST'
 N_line = 2    #how many line you want to compare as reference
+FWall  = 1    #first wall
+Zdel = 0.0
 device.get_device_input(name)
 from device import N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont
 
@@ -56,15 +58,19 @@ plt.plot(device.RRR0, device.ZZZ0, color = 'b', label = 'Ref',linewidth=3)
 plt.plot(device.Rsep0, device.Zsep0, 'x', color = 'b',linewidth=3) 
 
 """##second line##"""
-plt.plot(device.RRR1, device.ZZZ1, color = 'r', label = 'Ana-EVE') 
-plt.plot(device.Rsep1, device.Zsep1, 'x', color = 'r') 
+if N_line == 2:
+    plt.plot(device.RRR1, device.ZZZ1, color = 'r', label = 'Ana-EVE') 
+    plt.plot(device.Rsep1, device.Zsep1, 'x', color = 'r') 
 """##second line##"""
 
 for k in range (0,nr-1):
-    plt.plot(R[k,:],Z[k,:],'k--')
+    plt.plot(R[k,:],Z[k,:]+Zdel,'g--')
 
-plt.plot(R[nr-1,:],Z[nr-1,:],'k', label = 'Ana-TOMCAT')
-plt.scatter(R[0,0],0,color='red')
+plt.plot(R[nr-1,:],Z[nr-1,:]+Zdel,'g', label = 'Ana-TOMCAT')
+plt.scatter(R[0,0],Zdel,color='red')
+
+if FWall == 1:
+    plt.plot(device.FWR, device.FWZ, color = 'k') 
 
 plt.xlabel(r'$\mathregular{R\ [m]}$') 
 plt.ylabel(r'$\mathregular{Z\ [m]}$')
@@ -87,9 +93,9 @@ TprfI = nt(T0i,T1,expont)
 fig = plt.figure(figsize = (6.4, 5.5))
 ax = fig.add_subplot(2,1,1)
 
-ax.plot(r,Nprf,'g:',label='$n_e$')
-ax.plot(device.rho0*ap, device.Nprf0, 'b', label = 'Ref',linewidth=3) 
 
+ax.plot(device.rho0*ap, device.Nprf0, 'b', label = 'Ref',linewidth=3) 
+ax.plot(r,Nprf,'g:',label='$n_e$')
 """##second line##"""
 if N_line == 2:
     ax.plot(device.rho1*ap, device.Nprf1, 'r--', label = 'Ana-EVE')
@@ -104,12 +110,12 @@ plt.tight_layout()
 
 #fig = plt.figure(figsize = (6.4, 2.92))
 ax = fig.add_subplot(2, 1, 2)
-ax.plot(r,TprfE/1000,'g',label='$T_e$')
-ax.plot(r,TprfI/1000,'g--',label='$T_i$')
+
 
 ax.plot(device.rho0*ap, device.TprfE0/1000, 'b', label = 'Ref $T_e$',linewidth=3)
 ax.plot(device.rho0*ap, device.TprfI0/1000, 'b--', label = 'Ref $T_i$',linewidth=3) 
-
+ax.plot(r,TprfE/1000,'g',label='$T_e$')
+ax.plot(r,TprfI/1000,'g--',label='$T_i$')
 """##second line##""" 
 if N_line == 2:
     ax.plot(device.rho1*ap, device.TprfE1/1000, 'r', label = 'Ana-EVE $T_e$')

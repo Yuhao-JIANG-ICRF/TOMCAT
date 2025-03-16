@@ -1,0 +1,85 @@
+          Transport analysis summary:  Shot       1 at    11 ms
+                         Onetwo  V5.8.2  
+ 
+  Minor radius a (cm):   249.5         b/a:                     1.88
+  Nominal Rmajor (cm):   780.0         R at geom. cent. (cm): 782.7
+  R at mag. axis (cm):   827.7         Z at mag. axis (cm):    90.9
+  Volume (cm**3):          1.54E+09    Pol. circum. (cm):    2292.5
+  surface area (cm**2):    1.07E+07    cross. sect area   :  3.24E+05
+
+  Bt (G):                  6.30E+04    Ip  (A):                 1.50E+07
+  Bt at Rgeom (G):         6.28E+04    r(q = 1)/a:                0.00
+  Line-avg den (1/cm**3):  1.12E+14    Tau-particle-d  (s):     1.000
+ 
+      profiles             ucenter     uedge     ucen/uav
+  elec. den. (1/cm**3):    1.42E+14    3.71E+13    1.48
+  elec. temp. (keV):      30.06        0.09        2.67
+  ion   temp. (keV):      24.35        0.09        2.49
+  current  (A/cm**2):     88.80        5.96        1.86
+  Zeff:                    2.00        2.00        1.00
+  q:                       1.28       11.79
+  q* at edge:                          5.28
+  ang. speed (1/sec):     1.19E-01    1.84E-19    3.78E+00
+ 
+                            exper.          code
+  Surface voltage  :       0.00            0.02      Volts
+  Average voltage  :       0.00            0.01      Volts
+  Ohmic power:             0.00E+00        1.72E+05  Watts
+  Beam power-torus:        0.00E+00        0.00E+00  Watts
+  Neutron rate D(D,N):     0.00E+00        1.53E+18  #/s
+ 
+      computed quantities
+  Beam power elec. (W):    0.00E+00    ke at a/2 (1/cm-s):      1.64E+18
+  Beam power ions  (W):    0.00E+00    ki at a/2 (1/cm-s):      3.43E+18
+  Beam power cx loss (W):  0.00E+00    ki/kineo at a/2:       139.54
+  Shinethrough (%):        0.00        chi electrons at a/2:    1.54E+04
+  RF power absorbed:       1.01E+08    chi ions at a/2:         3.64E+04
+  Radiated power   (W):    1.36E+08    r*/a: Te = (Te(0)+Te(a))/2 0.45
+  Brems prim ions  (W):    2.56E+07    Brems imp ions :         8.76E+07
+  Poloidal B field (G):    8.22E+03    Beta-poloidal:           1.434
+  beam torque (nt-m)       0.00E+00    total torque (nt-m):     2.46E-05
+  stored ang mtm (kg*m2/s):  1.49E-03  momt inertia (kg*m**2):  3.79E-02
+  kinetic energy of rotation (j) :  4.71E-05
+ 
+                           electrons     ions       thermal      total
+  Stored Energy (J)        4.536E+08   3.535E+08   8.071E+08   8.859E+08
+  dE/dt (W):               0.000E+00  -6.422E+10  -6.422E+10  -6.422E+10
+  Input power (W):         2.919E+08               4.097E+08   4.097E+08
+  Energy conf. time (s):   1.5537                  0.0125      0.0137
+  H(89p) =    0.01  H(89pm) =  2.31 H_ITER98y2 =  1.00  H_Petty =  0.67
+  angular momentum confinement time (sec)          0.0043
+ 
+      Beta-toroidal        volume-avg       center
+  electrons:               1.251E-02       4.341E-02
+  ions:                    9.745E-03       3.150E-02
+  beam:                    0.000E+00       0.000E+00
+  alphas:                  2.172E-03       1.817E-02
+  total:                   2.442E-02       9.308E-02
+  Normalized beta          2.551E+00
+  total power input (W) =   1.016E+08  time =  1.2000E+01
+  Itot =  1.50E+07  Iohm =  7.37E+06  Iboot =  6.55E+06  Ibeam =   0.00E+00  Irf =   1.08E+06
+                  cd,amps          qe ,watts          qi, watts
+  genray          0.000E+00        0.000E+00          0.000E+00
+  genray          0.000E+00        0.000E+00          0.000E+00
+  ech             1.219E+06        7.194E+07          0.000E+00
+  ech             0.000E+00        0.000E+00          0.000E+00
+ QDD =      0.0 QDT =     14.9 QTT =      0.0 QHe3d =      0.0
+ P DD  =1.73E+06  P DT =1.51E+09  P TT =2.86E+06 W  P He3d 0.00E+00
+ D(D,n) =   1.53E+18  D(T,n) =   5.37E+20  T(T,2n) =   1.58E+18  He3(D,p)He4 =   0.00E+00   #/sec
+ paux (MW) = 1.01E+02 palpha = 3.01E+02 prad = 1.36E+02 Ptransport =  2.67E+02
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  convergence results for Newton based  solver are :
+  for the scaled set of equations we have:
+  total sum of squares of residuals (all equations):    3.24E-11
+  maximum gradient of any equation:    7.81E+01
+  total number of iterations taken :    5
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+ 
+ 
+ 
+1time =       12000.00 ms,  time point=           1.0   Analysis of shot       1 at    11 ms            (onetwo version: Onetwo  V5.8.2  )
+
+  二 21-5月-24 上午 11时41分22秒
+
+  Linux shenma067 2.6.32-431.el6.x86_64 #1 SMP Fri Nov 22 03:15:09 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux

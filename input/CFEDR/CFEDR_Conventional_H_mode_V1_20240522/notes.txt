@@ -1,0 +1,8 @@
+note: SAT1-GYRO (default); pellet at (0.5~0.9) amount gauss_add:(0.7,0.2,5e21) but neglecting cooling effect; on-axis reversed ECCD raise qmin up above 1; 
+note: Future: to be updated with EC parameters and ICRH scenario and parameters
+note: Future: to check SAT1 versus SAT2 and do turbulence analysis
+
+save at place: /scratch/jlchen/OMFITdata2020EXP/trunk_iterations/CFEDR/fhaoc/CFEDR_Conventional_H_mode/V1_0522
+
+original note: SAT1 15MA neped7.4 72EC96t213p 10invEC 0.7fuel5 w/ocoo; 
+original place: /scratch/fhaoc/OMFIT_BEST/15MAneped7.472EC96t213p10invEC0.7fuel5wocoo

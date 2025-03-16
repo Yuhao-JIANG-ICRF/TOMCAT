@@ -1,31 +1,38 @@
-example 1
 &INPUT
  iJETdata=0,
  factempJET=1.0,1.0,1.0,1.0,2.5,1.0,
- namecase='CFETR',shortname=' ',          
- N0=1.4e20,
- N1=4.0e19,
- nspeci=4,
+ namecase='CFEDR',shortname=' ',    
+      
+ ap=2.5,R0=7.8,
+ B0=6.3,
+ IDSHAPE=1,
+ xkap=1.6,
+ del0=0.40,
+ delt=0.33,
+
+ T0=30e3, 3*24e3
+ T1=4*0.8e3,
+ N0=14e19,
+ N1=4e19,
+ exponn=4*1.0,
+ expont=4*1.5,
+
+ nspeci=4,   
  z=1.,1.,2.,
  a=2.,3.,3.,
- concentr=0.47, 0.47, 0.03,
+ concentr=0.47, 0.47, 0.03
+
+ frek=60e6,
+ ntor=40,
+ xleft=  -2.42,
+ xleftin=-2.41,
+ xrightin=2.41,
+ xright=  2.42,
+
  ichargeneut=2,
  IAUTO=1,
  IL=2,1,4,3,6,5,8,7,9,10,12,11,
  IR=1,2,3,4,6,5,7,8,9,10,12,11,
- ap=2.5,R0=7.8,
- B0=6.3,
- IDSHAPE=1,xkap=1.6,del0=-0.05,delt=0.33,
- T0=3.0e4, 3*2.4e4
- T1=4*0.8e3,
- exponn=4*1.0,
- expont=4*1.5,
- frek=60.e6,
- ntor=40,
- xleft=  -2.48,
- xleftin=-2.38,
- xrightin=2.38,
- xright=  2.48,
  numLFS=100,numHFS=100,
  zleft=0.000003e-0,zright=0.00003e-0,
  iautobreak=0,
