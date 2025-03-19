@@ -7,29 +7,29 @@ rm -rf 1para_scan/*
 
 Z=1  #Hydrogen
 ####-----
-b_start=0.01
-b_end=0.5
-b_step=0.01
+b_start=50e6
+b_end=60e6
+b_step=0.5e6
 ####-----
 b_values=$(awk "BEGIN {for(i=$b_start;i<=$b_end;i+=$b_step) print i}")
 
 pairs=()
 
 for b in $b_values; do
-    #pairs+=("$b,")
+    pairs+=("$b,")
     
 ####Con_scan####
-
-    a=$(echo "scale=4; 1 - $Z * $b" | bc)
-    pairs+=("0$a, $b,")
+    #a=$(echo "scale=4; 1 - $Z * $b" | bc)
+    #pairs+=("0$a, $b,")
 done
 
 
 for idx in "${!pairs[@]}"; do
 #####change input file####
     pair="${pairs[$idx]}"   
+    sed -i "s|frek=.*|frek=${pair}|" ../input/Input.dat
     #sed -i "s|ntor=.*|ntor=${pair}|" ../input/Input.dat
-    sed -i "s|concentr=.*|concentr=${pair}|" ../input/Input.dat
+    #sed -i "s|concentr=.*|concentr=${pair}|" ../input/Input.dat
 
 #####Run TOMCAT####
     ../tomcat < ../input/Input.dat  
@@ -38,10 +38,9 @@ for idx in "${!pairs[@]}"; do
 #####save results#### 
     target_folder="1para_scan/$((idx+1))"
     mkdir -p "$target_folder"
-    find . -maxdepth 1 -type f -exec mv {} "$target_folder" \;
+    find . -maxdepth 1 -type f -not -name ".*" -not -name "*.sh" -exec mv {} "$target_folder/" \;
     
-    #echo "Ntor=${pair} Run TOMCAT，Results move to $target_folder"
-    echo "concentr=${pair} Run TOMCAT，Results move to $target_folder"#
+    echo "Results save to $target_folder"
     sleep 1.5
 done
 

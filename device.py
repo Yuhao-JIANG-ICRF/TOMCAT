@@ -29,9 +29,9 @@ def get_device_input(name):
         ap = 0.43
         R0 = 2.5
         B0 = 3.657
-        xkap = 1.4
+        xkap = 1.30
         del0 = 0.05
-        delt = 0.3 
+        delt = 0.7
         T0e = 1.609e3
         T0i = 1.37e3
         T1 = 0.25e3
@@ -86,7 +86,7 @@ def get_device_input(name):
         TprfI0 = Ti0
         TprfI1 = Ti1
       
-        
+#%%        
     elif name == 'cfedr':
         N0 = 14e19
         N1 = 4e19
@@ -102,7 +102,6 @@ def get_device_input(name):
         exponn = 0.7
         expont = 1.3
         
-        pre = 'input/CFEDR/CFEDR_Conventional_H_mode_V1_20240522/'
         from scipy.io import loadmat
         from read_gfile_func import read_gfile_func
 
@@ -118,8 +117,7 @@ def get_device_input(name):
         TprfI0 = IONS_1.temperature*1000
         # read data from gfile
         sfile = 'input/CFEDR/CFEDR_Conventional_H_mode_V1_20240522/gfile_efit'
-        gdata, ireadok = read_gfile_func(sfile, 12, 0, 0)
-        gvar = gdata
+        gvar, ireadok = read_gfile_func(sfile, 12, 0, 0)
         
         RRR0 = gvar['rbbbs']
         ZZZ0 = gvar['zbbbs']        
@@ -128,6 +126,7 @@ def get_device_input(name):
         FWR = gvar['xlim']
         FWZ = gvar['ylim']
         
+#%%        
     else:
         raise ValueError("unknow device: {}".format(name))
 

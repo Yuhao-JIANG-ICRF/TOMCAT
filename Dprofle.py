@@ -22,10 +22,10 @@ plt.close('all')     #close all figures
 
 # %%
 import device
-name = 'WEST'
+name = 'west'
 N_line = 2    #how many line you want to compare as reference
-FWall  = 1    #first wall
-Zdel = 0.0
+FWall  = 1   #first wall
+Zdel = 0.03
 device.get_device_input(name)
 from device import N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont
 
@@ -67,7 +67,7 @@ for k in range (0,nr-1):
     plt.plot(R[k,:],Z[k,:]+Zdel,'g--')
 
 plt.plot(R[nr-1,:],Z[nr-1,:]+Zdel,'g', label = 'Ana-TOMCAT')
-plt.scatter(R[0,0],Zdel,color='red')
+plt.scatter(R[0,0],Zdel,color='green')
 
 if FWall == 1:
     plt.plot(device.FWR, device.FWZ, color = 'k') 

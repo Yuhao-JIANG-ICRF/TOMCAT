@@ -23,8 +23,9 @@ plt.close('all')     #close all figures
 # %%
 'Basic parameters'
 
-pre = 'output/'
-#pre = 'output/1para_scan/3/'
+#pre = 'output/'
+#pre = 'output/1para_scan/7/'
+pre = 'output/2para_scan/31/12/'
 
 pref = 'output/'     #Save figures
 UNDERSCORE='_'       #For MAC

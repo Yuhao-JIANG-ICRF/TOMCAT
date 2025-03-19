@@ -21,7 +21,7 @@ from device import get_model_data
 import gc as gc
 import os
 gc.collect()    #release ram
-#plt.close('all')     #close all figures
+plt.close('all')     #close all figures
 
 # %%
 'Basic parameters'
@@ -143,20 +143,21 @@ for i in range(Ns):
 YL = plt.ylim()
 plt.ylim(0,YL[1])
 plt.xlim(np.min(xx),np.max(xx))
-plt.ylabel('Absorbed Power [W/m]')
+plt.ylabel('Absorbed Power [%]')
 plt.xlabel(xlabel)
 plt.legend()
 
 
 Mtot = np.argmax(P_sum[:,0])
-Mm = np.argmax(P_sum[:,-1])
+nMtot = Mtot+1
 Sumi = np.sum(P_sum[:,2:],axis=1)
 Mi = np.argmax(Sumi)
+nMi = Mi+1
 
 
-print(f'The maximum of the total power absorption is Case {Mtot}:')
+print(f'The maximum of the total power absorption is Case {nMtot}:')
 print(f'{xx[Mtot]}, $P_{{tot}}$ = {P_sum[Mtot,0]:.1f}%')
-print(f'The maximum of the ions power absorption is Case {Mi}:')
+print(f'The maximum of the ions power absorption is Case {nMi}:')
 print(f'{xx[Mi]}, $P_{{ions}}$ = {Sumi[Mi]:.1f}%')
 
 import os
