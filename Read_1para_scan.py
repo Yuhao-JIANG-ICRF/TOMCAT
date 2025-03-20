@@ -141,7 +141,7 @@ plt.plot(xx,P_sum[:,0],'k--',label='Total')
 for i in range(Ns):  
         plt.plot(xx,P_sum[:,i+1],color=colors[i],label=f'${name_species[i]}$')
 YL = plt.ylim()
-plt.ylim(0,YL[1])
+plt.ylim(0,100)
 plt.xlim(np.min(xx),np.max(xx))
 plt.ylabel('Absorbed Power [%]')
 plt.xlabel(xlabel)

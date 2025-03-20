@@ -22,8 +22,8 @@ plt.close('all')     #close all figures
 
 # %%
 import device
-name = 'west'
-N_line = 2    #how many line you want to compare as reference
+name = 'WEST'
+N_line = 1    #how many line you want to compare as reference
 FWall  = 1   #first wall
 Zdel = 0.03
 device.get_device_input(name)
@@ -94,15 +94,16 @@ fig = plt.figure(figsize = (6.4, 5.5))
 ax = fig.add_subplot(2,1,1)
 
 
-ax.plot(device.rho0*ap, device.Nprf0, 'b', label = 'Ref',linewidth=3) 
-ax.plot(r,Nprf,'g:',label='$n_e$')
+ax.plot(device.rho0, device.Nprf0, 'b', label = 'Ref',linewidth=3) 
 """##second line##"""
 if N_line == 2:
-    ax.plot(device.rho1*ap, device.Nprf1, 'r--', label = 'Ana-EVE')
+    ax.plot(device.rho1, device.Nprf1, 'r--', label = 'Ana-EVE')
 """##second line##"""
+ax.plot(r/ap,Nprf,'g:',label='$n_e$')
 
 YL = ax.get_ylim()
 ax.set_ylim(0,YL[1])
+ax.set_xlim(0,1)
 ax.set_ylabel(r'$\mathregular{n_e\ [m^{-3}]}$')
 ax.legend()
 ax.grid(True)
@@ -112,18 +113,19 @@ plt.tight_layout()
 ax = fig.add_subplot(2, 1, 2)
 
 
-ax.plot(device.rho0*ap, device.TprfE0/1000, 'b', label = 'Ref $T_e$',linewidth=3)
-ax.plot(device.rho0*ap, device.TprfI0/1000, 'b--', label = 'Ref $T_i$',linewidth=3) 
-ax.plot(r,TprfE/1000,'g',label='$T_e$')
-ax.plot(r,TprfI/1000,'g--',label='$T_i$')
+ax.plot(device.rho0, device.TprfE0/1000, 'b', label = 'Ref $T_e$',linewidth=3)
+ax.plot(device.rho0, device.TprfI0/1000, 'b--', label = 'Ref $T_i$',linewidth=3) 
 """##second line##""" 
 if N_line == 2:
-    ax.plot(device.rho1*ap, device.TprfE1/1000, 'r', label = 'Ana-EVE $T_e$')
-    ax.plot(device.rho1*ap, device.TprfI1/1000, 'r--', label = 'Ana-EVE $T_i$')
+    ax.plot(device.rho1, device.TprfE1/1000, 'r', label = 'Ana-EVE $T_e$')
+    ax.plot(device.rho1, device.TprfI1/1000, 'r--', label = 'Ana-EVE $T_i$')
 """##second line##""" 
+ax.plot(r/ap,TprfE/1000,'g',label='$T_e$')
+ax.plot(r/ap,TprfI/1000,'g--',label='$T_i$')
 
 YL = ax.get_ylim()
 ax.set_ylim(0,YL[1])
+ax.set_xlim(0,1)
 ax.set_xlabel(r'$ x [m]$')
 ax.set_ylabel(r'$\mathregular{T\ [keV]}$')
 ax.legend()

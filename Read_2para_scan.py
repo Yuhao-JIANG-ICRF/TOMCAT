@@ -30,7 +30,7 @@ pre = 'output/2para_scan'
 pref = 'output/'     #Save figures
 UNDERSCORE='_'       #For MAC
 
-con_scan = 0
+con_scan = 1
 
 if os.path.exists(pre):
     subfolders1 = [item for item in os.listdir(pre)
@@ -148,7 +148,7 @@ if con_scan==0:
 else:
     lists=labelf(B0f[:,0],freqf[:,0],Ntorf[:,0],confx[:,0],confy[:,0])
     ylabel,yaxis,del1,figname1 = labeln(lists)
-    lists=labelf(B0f[0,:],freqf[0,:],Ntorf[0,:],confx[0,:],confy[:,0])
+    lists=labelf(B0f[0,:],freqf[0,:],Ntorf[0,:],confx[0,:],confy[0,:])
     xlabel,xaxis,del2,figname2 = labeln(lists)
 figname= figname1+'&'+figname2    
 del lists[del1]
@@ -186,7 +186,7 @@ plt.rcParams.update({
 
 plt.figure(figsize=(6, 5))
 plt.suptitle(ftitle+'\n Total Power absorption [%]')  
-levels=np.linspace(0,100,50)
+levels=50
 cp1 = plt.contourf(xaxis,yaxis,Psf[0],levels=levels)
 plt.colorbar(cp1)
 plt.ylabel(ylabel)
@@ -196,7 +196,7 @@ plt.xlabel(xlabel)
 for i in range(Ns):  
     plt.figure(figsize=(6, 5))
     plt.suptitle(ftitle+'\n'+'${%s} $' % name_species[i] + ' Power absorption [%]')  
-    levels=np.linspace(0,100,50)
+    levels=50
     cp1 = plt.contourf(xaxis,yaxis,Psf[i+1],levels=levels)
     plt.colorbar(cp1)
     plt.ylabel(ylabel)

@@ -6,10 +6,11 @@ mkdir -p 1para_scan
 rm -rf 1para_scan/*
 
 Z=1  #Hydrogen
+Z=2  #Helium
 ####-----
-b_start=50e6
-b_end=60e6
-b_step=0.5e6
+b_start=10
+b_end=60
+b_step=1
 ####-----
 b_values=$(awk "BEGIN {for(i=$b_start;i<=$b_end;i+=$b_step) print i}")
 
@@ -21,14 +22,17 @@ for b in $b_values; do
 ####Con_scan####
     #a=$(echo "scale=4; 1 - $Z * $b" | bc)
     #pairs+=("0$a, $b,")
+####Con_scan####3IONS
+    #a=$(echo "scale=4; (1 - $Z * $b)/2" | bc)
+    #pairs+=("0$a, 0$a, $b,")
 done
 
 
 for idx in "${!pairs[@]}"; do
 #####change input file####
     pair="${pairs[$idx]}"   
-    sed -i "s|frek=.*|frek=${pair}|" ../input/Input.dat
-    #sed -i "s|ntor=.*|ntor=${pair}|" ../input/Input.dat
+    #sed -i "s|frek=.*|frek=${pair}|" ../input/Input.dat
+    sed -i "s|ntor=.*|ntor=${pair}|" ../input/Input.dat
     #sed -i "s|concentr=.*|concentr=${pair}|" ../input/Input.dat
 
 #####Run TOMCAT####

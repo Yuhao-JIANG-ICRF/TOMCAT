@@ -6,13 +6,15 @@ mkdir -p 2para_scan
 rm -rf 2para_scan/*
 
 # parameter setup
-Z=1  # Hydrogen
+Zb=1  # Hydrogen
+Zc=2  #Helium
+Zc=3  #Lithium
 
-b_start=10
-b_end=60
-b_step=1
+b_start=0.20
+b_end=0.50
+b_step=0.01
 c_start=0.01
-c_end=0.20
+c_end=0.10
 c_step=0.01
 
 
@@ -22,16 +24,17 @@ c_values=$(awk "BEGIN {for(i=$c_start;i<=$c_end;i+=$c_step) print i}")
 countb=1
 
 for b in $b_values; do
-    sed -i "s|ntor=.*|ntor=${b},|" ../input/Input.dat 
+    #sed -i "s|ntor=.*|ntor=${b},|" ../input/Input.dat 
     countc=1 
     for c in $c_values; do
 
 ####Con_scan####
-        a=$(echo "scale=4; 1 - $Z * $c" | bc)       
+        #a=$(echo "scale=4; 1 - $Zc * $c" | bc) 
+	a=$(echo "scale=4; 1 - $Zb * $b - $Zc * $c" | bc)      
         if [[ $a == .* ]]; then
             a="0$a"
         fi      
-        sed -i "s|concentr=.*|concentr=${a}, ${c},|" ../input/Input.dat
+        sed -i "s|concentr=.*|concentr=${a}, ${b}, ${c},|" ../input/Input.dat
 ####---------------###########      
 
 #####Run T
