@@ -24,8 +24,8 @@ plt.close('all')     #close all figures
 'Basic parameters'
 
 pre = 'output/'
-#re = 'output/1para_scan/44/'
-#pre = 'output/2para_scan/31/12/'
+#pre = 'output/1para_scan/22/'
+#pre = 'output/2para_scan/80/10/'
 
 pref = 'output/'     #Save figures
 UNDERSCORE='_'       #For MAC
@@ -35,7 +35,7 @@ if iuseR = 1 , the central is at R0
 '''
 iuseR=0     #switch to choose the x axis
 Bon = 0     #swithc to have the boundry, 0--off; 1--on
-MA = 1     #swithc to plot magnetic axis, 0--off; 1--on
+MA = 0     #swithc to plot magnetic axis, 0--off; 1--on
 RA = 0     #swithc to plot major radius, 0--off; 1--on
 
 '''
@@ -83,7 +83,7 @@ B0   = aux80[3]   #Magnetic field [T]
 freq = aux80[2]/1e6   #ICRF frequency [MHz]
 Ntor = aux80[1]   #
 
-xn = aux25[:,0];
+xn = aux25[:,0]/a;
 n  = aux25[:,3:3+Ns];       #Density for n species
 T  = aux25[:,3+Ns:3+2*Ns]/1e3;   #Temp for n species 
 
@@ -127,12 +127,11 @@ DoublePass=Flux_re[-1]-Flux_re[0];
 # %%
 'PLOT FIGURE'
 colors = ['r', 'b', 'g', 'purple']
-ftitle = f'''
-             {name}:
-             $B_0$={B0:.1f} [T],
-             $f_{{ICRF}}$={freq:.1f} [MHz],
-             $N_{{tor}}$={Ntor:.0f}
-             '''.replace('\n','')
+ftitle = f'''{name}: 
+$B_0$={B0:.1f} [T], 
+$f_{{ICRF}}$={freq:.1f} [MHz], 
+$N_{{tor}}$={Ntor:.0f}
+'''.replace('\n','')
 ftitle1 = ''
 ftitle2 = ''
 for i in range(Ns-1):
@@ -154,7 +153,6 @@ if iuseR == 0:
     
 
 XL = np.max(xn)
-xn = xn+R
 xE = xE+R
 xf = xf+R
 xP = xP+R
@@ -172,7 +170,12 @@ plt.rcParams.update({
     'xtick.bottom':True,
     'ytick.left':True,
     'ytick.right':True,
-    'axes.grid':True
+    'axes.grid':True,
+    'axes.labelsize':16,
+    'xtick.labelsize':14,
+    'ytick.labelsize':14,
+    'legend.fontsize':13,
+    'figure.titlesize':15
     })
 # %%
 plt.figure(1,figsize=(11, 7))
@@ -192,7 +195,7 @@ for i in range(Ns):
         plt.plot(xn,n[:,i],color=colors[i],label='$n_{%s}$' % name_species[i])    
         
 YL = plt.ylim()
-plt.xlim(xmax-a,xmax)
+plt.xlim(0,1)
 plt.ylim(0,YL[1])
 plt.title('')
 plt.ylabel('Density [$m^{-3}$]')
@@ -208,10 +211,10 @@ for i in range(Ns):
         plt.plot(xn,T[:,i],color=colors[i],label='$T_{i}$')
     
 YL = plt.ylim()
-plt.xlim(xmax-a,xmax)
+plt.xlim(0,1)
 plt.ylim(0,YL[1])
 plt.title('')
-plt.xlabel(xlab)
+plt.xlabel('$\\rho$')
 plt.ylabel('Temp [keV]')
 
 'Disp root'
@@ -221,7 +224,7 @@ YL = plt.ylim()
 XL = np.max(xn)
 #plt.plot([XL,XL],[0,YL[1]],'k--')
 
-plt.xlim(-a,a)
+plt.xlim(xmin,xmax)
 plt.ylim(YL[0],YL[1])
 
 plt.title('')
@@ -330,7 +333,7 @@ plt.ylabel('|$E^{+}$|')
 # %%
 'PLOT FIGURE 4----power deposition'
 
-plt.figure(4,figsize=(6, 5))
+plt.figure(4,figsize=(6, 5.5))
 plt.subplots_adjust(left=0.1,right=0.9,
                     wspace=0.3)
 
@@ -355,18 +358,19 @@ for i in plt.get_fignums():
         else:
             ax.set_ylim(0,YL[1])
         if i==2:
-            ax.set_xlim(xmax-a,xmax)
+            ax.set_xlim(0,1)
+            ax.set_xlabel('$\\rho$')
         else:
             ax.set_xlim(xmin,xmax)  
-        ax.set_xlabel(xlab)
+            ax.set_xlabel(xlab)
         
-        if MA==1:
-            ax.axvline(x=xmax-a+Rmag-R0, color='k',linestyle='--',label='magnetic axis',linewidth=1.5)
-        if RA==1:
-            ax.axvline(x=xmax-a, color='k',linestyle=':',linewidth=1.5)
-        if Bon==1:
-            ax.axvline(x=B1, color='k',linestyle=':',linewidth=1.5)  
-            ax.axvline(x=B2, color='k',linestyle=':',linewidth=1.5)
+            if MA==1:
+                ax.axvline(x=xmax-a+Rmag-R0, color='k',linestyle='--',label='magnetic axis',linewidth=1.5)
+            if RA==1:
+                ax.axvline(x=xmax-a, color='k',linestyle=':',linewidth=1.5)
+            if Bon==1:
+                ax.axvline(x=B1, color='k',linestyle=':',linewidth=1.5)  
+                ax.axvline(x=B2, color='k',linestyle=':',linewidth=1.5)
         ax.legend()
 
     
@@ -392,9 +396,9 @@ if not os.path.exists(folder):
 figname = ['Sum','Dens-Temp','Poyn-Elec','Pabs'] 
 for i in plt.get_fignums():
     plt.figure(i)
-    filename = f'{figname[i-1]}.png'
+    filename = f'{figname[i-1]}.pdf'
     filepath = os.path.join(folder, filename)
-    plt.savefig(filepath)
+    plt.savefig(filepath,dpi=300)
     
     
     

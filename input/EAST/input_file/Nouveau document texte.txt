@@ -1,0 +1,40 @@
+import re
+
+def extract_matrices(filename):
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+    
+    n_y = None
+    data_follow_index = None
+    # 遍历每一行，提取“# OF Y PTS”中的数值和“DATA FOLLOW:”行的位置
+    for i, line in enumerate(lines):
+        if "# OF Y PTS" in line:
+            # 提取数字
+            match = re.search(r'(\d+)', line)
+            if match:
+                n_y = int(match.group(1))
+        if "DATA FOLLOW:" in line:
+            data_follow_index = i
+            break
+
+    if n_y is None:
+        raise ValueError("未找到 '# OF Y PTS' 信息，请检查文件格式。")
+    if data_follow_index is None:
+        raise ValueError("未找到 'DATA FOLLOW:' 信息，请检查文件格式。")
+
+    # 从 DATA FOLLOW: 后面开始的所有行合成一个字符串
+    data_str = " ".join(lines[data_follow_index+1:])
+    
+    # 提取所有科学计数法格式的数字（如 1.234567e+02）
+    nums_str = re.findall(r'[-+]?\d*\.\d+e[+-]\d+', data_str)
+    nums = [float(num) for num in nums_str]
+    
+    # 文件中的数据顺序为：一个 x 值（不需要），接着 n_y 个 y 值，再接着 n_y 个 f 值
+    if len(nums) < 1 + 2 * n_y:
+        raise ValueError("提取的数字个数不足，请检查文件内容。")
+    
+    # 忽略第一个 x 值
+    y_array = nums[1:1+n_y]
+    f_array = nums[1+n_y:1+n_y+n_y]
+    
+    return y_array, f_array

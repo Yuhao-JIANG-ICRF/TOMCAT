@@ -127,13 +127,18 @@ plt.rcParams.update({
     'xtick.bottom':True,
     'ytick.left':True,
     'ytick.right':True,
-    'axes.grid':True
+    'axes.grid':True,
+    'axes.labelsize':16,
+    'xtick.labelsize':14,
+    'ytick.labelsize':14,
+    'legend.fontsize':13,
+    'figure.titlesize':15
     })
 
 colors = ['r', 'b', 'g', 'purple']
 
 
-plt.figure(figsize=(6, 5))
+plt.figure(figsize=(6, 5.5))
 plt.suptitle(ftitle)  
    
 'Power absorption'
@@ -173,7 +178,7 @@ print(folder)
 if not os.path.exists(folder):
     os.makedirs(folder)   # create the folder if it does't exis
 
-filename = f'{figname}.png'
+filename = f'{figname}.pdf'
 filepath = os.path.join(folder, filename)
-plt.savefig(filepath)
+plt.savefig(filepath,dpi=300)
    

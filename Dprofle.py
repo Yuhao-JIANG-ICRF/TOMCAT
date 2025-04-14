@@ -25,7 +25,7 @@ import device
 name = 'WEST'
 N_line = 1    #how many line you want to compare as reference
 FWall  = 1   #first wall
-Zdel = 0.03
+Zdel = 0
 device.get_device_input(name)
 from device import N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont
 
@@ -126,7 +126,7 @@ ax.plot(r/ap,TprfI/1000,'g--',label='$T_i$')
 YL = ax.get_ylim()
 ax.set_ylim(0,YL[1])
 ax.set_xlim(0,1)
-ax.set_xlabel(r'$ x [m]$')
+ax.set_xlabel(r'$\rho$')
 ax.set_ylabel(r'$\mathregular{T\ [keV]}$')
 ax.legend()
 ax.grid(True)

@@ -101,10 +101,6 @@ def cod(para):
         paraf2 = para2[:,-1].reshape(Ncase1,Ncase2)
         return paraf1,paraf2
         
-   
-    
-        
-
 
 confy, confx = cod(con)
 B0f = cod(B0)
@@ -180,11 +176,16 @@ plt.rcParams.update({
     'xtick.bottom':True,
     'ytick.left':True,
     'ytick.right':True,
-    'axes.grid':True
+    'axes.grid':True,
+    'axes.labelsize':16,
+    'xtick.labelsize':14,
+    'ytick.labelsize':14,
+    'legend.fontsize':13,
+    'figure.titlesize':15
     })
 
 
-plt.figure(figsize=(6, 5))
+plt.figure(figsize=(6, 5.5))
 plt.suptitle(ftitle+'\n Total Power absorption [%]')  
 levels=50
 cp1 = plt.contourf(xaxis,yaxis,Psf[0],levels=levels)
@@ -233,11 +234,11 @@ if not os.path.exists(folder):
 for i in plt.get_fignums():
     plt.figure(i)
     if i==1:       
-        filename = f'Total-ABS-{figname}.png'
+        filename = f'Total-ABS-{figname}.pdf'
     else:
-        filename = f'{name_species[i-2]}-ABS-{figname}.png'
+        filename = f'{name_species[i-2]}-ABS-{figname}.pdf'
     filepath = os.path.join(folder, filename)
-    plt.savefig(filepath)
+    plt.savefig(filepath,dpi=300)
 
 
    

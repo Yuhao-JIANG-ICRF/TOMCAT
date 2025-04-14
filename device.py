@@ -5,7 +5,7 @@ import numpy as np
 '''
 parameter_dict = {    
     'CFEDR': (2.5, 7.8, 8.2),
-    'CFETR': (2.5, 7.8, 8.2),
+    'EAST': (0.47, 1.85, 1.85+0.05),
     'WEST': (0.43, 2.5, 2.5+0.05)
     # add new device here
 }
@@ -126,6 +126,37 @@ def get_device_input(name):
         FWR = gvar['xlim']
         FWZ = gvar['ylim']
         
+    elif name == 'east':
+        ap = 0.47
+        R0 = 1.85
+        B0 = 2.45
+        xkap = 1.35
+        del0 = 0.05
+        delt = 0.9
+        N0 = 3.04e19
+        N1 = 0.98e19
+        T0e = 10e3
+        T0i = 1e3
+        T1 = 0.1e3
+        exponn = 0.9
+        expont = 1.2
+        
+        from input.EAST.input_file.data_para import parse_data_file
+        pre = 'input/EAST/input_file/'
+        rho0, Nprf0 = parse_data_file(pre+'B14187.NER')
+        Nprf0 = Nprf0*1e6
+        rho0, TprfE0= parse_data_file(pre+'B14187.TER')
+        rho0, TprfI0= parse_data_file(pre+'B14187.TIR')
+
+        from read_gfile_func import read_gfile_func
+        sfile = pre+'/g101735.03000'
+        gvar, ireadok = read_gfile_func(sfile, 12, 0, 0)
+        RRR0 = gvar['rbbbs']
+        ZZZ0 = gvar['zbbbs']        
+        Rsep0 = gvar['rmaxis']
+        Zsep0 = gvar['zmaxis']
+        FWR = gvar['xlim']
+        FWZ = gvar['ylim']
 #%%        
     else:
         raise ValueError("unknow device: {}".format(name))
@@ -183,4 +214,4 @@ def get_model_data(pre: str):
     return device_name, num_species, name_species, concentrations, minor_radius, major_radius, position_axis
 
 
-
+#%%

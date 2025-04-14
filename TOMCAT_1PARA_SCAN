@@ -5,26 +5,30 @@ cd output
 mkdir -p 1para_scan
 rm -rf 1para_scan/*
 
-Z=1  #Hydrogen
-Z=2  #Helium
+ZH=1  # Hydrogen
+ZHe=2  #Helium
+ZLi=3  #Lithium
+
+Zb=$ZLi
+
 ####-----
-b_start=10
-b_end=60
-b_step=1
+b_start=0.001
+b_end=0.1
+b_step=0.005
 ####-----
 b_values=$(awk "BEGIN {for(i=$b_start;i<=$b_end;i+=$b_step) print i}")
 
 pairs=()
 
 for b in $b_values; do
-    pairs+=("$b,")
+    #pairs+=("$b,")
     
 ####Con_scan####
-    #a=$(echo "scale=4; 1 - $Z * $b" | bc)
+    #a=$(echo "scale=4; 1 - $Zb * $b" | bc)
     #pairs+=("0$a, $b,")
 ####Con_scan####3IONS
-    #a=$(echo "scale=4; (1 - $Z * $b)/2" | bc)
-    #pairs+=("0$a, 0$a, $b,")
+    a=$(echo "scale=4; (1 - $Zb * $b)/2" | bc)
+    pairs+=("0$a, 0$a, $b,")
 done
 
 
@@ -32,8 +36,8 @@ for idx in "${!pairs[@]}"; do
 #####change input file####
     pair="${pairs[$idx]}"   
     #sed -i "s|frek=.*|frek=${pair}|" ../input/Input.dat
-    sed -i "s|ntor=.*|ntor=${pair}|" ../input/Input.dat
-    #sed -i "s|concentr=.*|concentr=${pair}|" ../input/Input.dat
+    #sed -i "s|ntor=.*|ntor=${pair}|" ../input/Input.dat
+    sed -i "s|concentr=.*|concentr=${pair}|" ../input/Input.dat
 
 #####Run TOMCAT####
     ../tomcat < ../input/Input.dat  
