@@ -22,12 +22,12 @@ plt.close('all')     #close all figures
 
 # %%
 import device
-name = 'WEST'
+name = 'CFEDR'
 N_line = 1    #how many line you want to compare as reference
 FWall  = 1   #first wall
-Zdel = 0
+
 device.get_device_input(name)
-from device import N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont
+from device import N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont, Zdel
 
 
 # ZZZ0, RRR0, Rsep0,rho0, Nprf0, TprfE0,TprfI0
@@ -81,15 +81,15 @@ plt.tight_layout()
 fig.gca().axis('equal')
 
 #%%
-def nt(A0, A1, expon):
+def build_profile(A0, A1, expon):
     return  (A0-A1)*(1-(r/ap)**2)**expon + A1
 
-Nprf = nt(N0,N1,exponn)
-TprfE = nt(T0e,T1,expont)
-TprfI = nt(T0i,T1,expont)
+Nprf = build_profile(N0,N1,exponn)
+TprfE = build_profile(T0e,T1,expont)
+TprfI = build_profile(T0i,T1,expont)
 
 
-#%%
+#%%  plot density and temperature
 fig = plt.figure(figsize = (6.4, 5.5))
 ax = fig.add_subplot(2,1,1)
 
@@ -131,3 +131,36 @@ ax.set_ylabel(r'$\mathregular{T\ [keV]}$')
 ax.legend()
 ax.grid(True)
 plt.tight_layout()
+
+#%%
+R_ml = np.zeros(na)
+R_mh = np.zeros(na)
+for k in range (0,na):      
+    shaf = del0 *(1-(r[k]/ap)**2)   
+    
+    R_ml[k]  = R0 + shaf + r[k]*1
+    R_mh[k]  = R0 + shaf + r[k]*(-1)
+
+fig = plt.figure(figsize=(6.4, 5.5))
+ax = fig.add_subplot(2, 1, 1)
+
+ax.plot(R_ml, Nprf, 'g', label=r'$n_e$ left')
+ax.plot(R_mh, Nprf, 'g', label=r'$n_e$ right')
+ax.set_ylabel(r'$n_e\ [m^{-3}]$')
+ax.set_title(r'$n_e(R)$ at Midplane ($Z = 0$)')
+ax.grid(True)
+ax.legend()
+
+ax = fig.add_subplot(2, 1, 2)
+ax.plot(R_ml, TprfE/1000, 'g', label=r'$T_e$')
+ax.plot(R_mh, TprfE/1000, 'g')
+ax.plot(R_ml, TprfI/1000, 'g--', label=r'$T_i$')
+ax.plot(R_mh, TprfI/1000, 'g--')
+
+ax.set_xlabel('R [m]')
+ax.set_ylabel(r'$\mathregular{T\ [keV]}$')
+ax.set_title(r'$T(R)$ at Midplane ($Z = 0$)')
+ax.grid(True)
+ax.legend()
+
+fig.tight_layout()

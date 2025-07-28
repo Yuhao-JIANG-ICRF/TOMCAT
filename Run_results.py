@@ -15,7 +15,7 @@ globals().clear()
 'import Library or Package and release ram & close fig' 
 import numpy as np
 import matplotlib.pyplot as plt
-from device import get_model_data
+import device 
 import gc as gc
 gc.collect()    #release ram
 plt.close('all')     #close all figures
@@ -33,10 +33,12 @@ UNDERSCORE='_'       #For MAC
 if iuseR = 0 , the central is at 0,
 if iuseR = 1 , the central is at R0
 '''
-iuseR=0     #switch to choose the x axis
+iuseR = 1     #switch to choose the x axis
 Bon = 0     #swithc to have the boundry, 0--off; 1--on
 MA = 0     #swithc to plot magnetic axis, 0--off; 1--on
 RA = 0     #swithc to plot major radius, 0--off; 1--on
+
+Pow_input = 20e6 #set the input power [MW]
 
 '''
 name    = name of device,
@@ -47,9 +49,10 @@ a       = minor radius,
 R0      = major radius, 
 Rmag    = position magnectic axis
 '''
-name, Ns, name_species, conc, a, R0, Rmag = get_model_data(pre)
-
-
+name, Ns, name_species, conc, a, R0, Rmag = device.get_model_data(pre)
+device.get_device_input(name)
+from device import del0,N0,N1,exponn,T0e,T1,expont
+                      
 print("Device:", name)
 print("Number of species:", Ns)
 print("Species:", name_species)
@@ -333,14 +336,14 @@ plt.ylabel('|$E^{+}$|')
 # %%
 'PLOT FIGURE 4----power deposition'
 
-plt.figure(4,figsize=(6, 5.5))
+plt.figure(4,figsize=(7, 5.5))
 plt.subplots_adjust(left=0.1,right=0.9,
                     wspace=0.3)
 
 'Power absorption'
-plt.plot(xP,Ptot,'k--',label=f'$Total$:{Ptot_sum[-1,0]:.0f}%')
+plt.plot(xP,Ptot*Pow_input,'k--',label=f'$Total$:{Ptot_sum[-1,0]:.0f}%')
 for i in range(Ns):  
-        plt.plot(xP,Pabs[:,i],color=colors[i],label=f'${name_species[i]}$:{Pabs_sum[-1,i]:.0f}%')
+        plt.plot(xP,Pabs[:,i]*Pow_input,color=colors[i],label=f'${name_species[i]}$:{Pabs_sum[-1,i]:.0f}%')
 
 plt.title('')
 plt.ylabel('Absorbed Power [W/m]')
@@ -401,4 +404,101 @@ for i in plt.get_fignums():
     plt.savefig(filepath,dpi=300)
     
     
+#%%
+def invert_Rm_to_xn(Rm, R0, del0, a, side):
+    # side = +1 for theta=0 (R_ml), -1 for theta=pi (R_mh)
+    A = del0 
+    B = -side * a
+    C = Rm - R0 - del0
+
+    discriminant = B**2 - 4*A*C
+    if discriminant < 0:
+        return np.nan  # no real solution
+    x1 = (-B + np.sqrt(discriminant)) / (2*A)
+    x2 = (-B - np.sqrt(discriminant)) / (2*A)
     
+    # choose solution in range [0, a]
+    for x in [x1, x2]:
+        if 0 <= x <= a:
+            return x
+
+#%% get the normalized radius
+rho = np.zeros(len(xP))
+for k in range (0,len(xP)):   
+    if xP[k] - (R0+del0)>0:
+        rho[k] = invert_Rm_to_xn(xP[k], R0, del0, a, 1)
+    elif xP[k] - (R0+del0)<0:
+        rho[k] = invert_Rm_to_xn(xP[k], R0, del0, a, -1)
+    else:
+        rho[k] = 0
+#%%    get ne and te
+def build_profile(A0, A1, expon):
+    return  (A0-A1)*(1-rho**2)**expon + A1
+    
+Nprf = build_profile(N0,N1,exponn)
+TprfE = build_profile(T0e,T1,expont)
+
+#%% calculate the tail tempareture
+eV_J = 1.602e-19         # Electronvolt to joule
+def tail_T(Z, a, C_m, P_dens,Te,Ne):
+    # slowing-down time
+    tau_s = 0.012 * a * (Te/1e3)**1.5 / (Z**2 * Ne/1e20)
+
+    # factor xi
+    xi = P_dens * tau_s / (3 * Ne*C_m * eV_J * Te)
+    
+    #T_eff
+    T_eff = Te/1e3 * xi
+    return T_eff
+    
+# Pabs[:,i]
+T_effD = tail_T(1, 2, 0.47, Pabs[:,1]*Pow_input,TprfE,Nprf)
+T_effT = tail_T(1, 3, 0.47, Pabs[:,2]*Pow_input,TprfE,Nprf)
+T_effHe3 = tail_T(2, 3, 0.03, Pabs[:,3]*Pow_input,TprfE,Nprf)
+
+
+plt.figure()
+plt.plot(xP,T_effD,label='D')
+plt.plot(xP,T_effT,label='T')
+plt.plot(xP,T_effHe3,label='He3')
+plt.legend()
+plt.xlabel('R [m]')
+plt.ylabel('Tail Tempareture [keV]')
+
+#%% calculate critical energy
+def f1(Ne,Zi,Xi,Ai):
+    fv = Ne*Xi*Zi**2/(Ne*Ai)
+    return fv
+
+def Ecri(A,Ne,Te):
+    X_He3 = 0.03
+    X_D = 0.47
+    X_T = 0.47
+
+    Z_D = 1
+    a_D = 2
+    Z_T = 1
+    a_T = 3
+    Z_He3 = 2
+    a_He3 = 3
+
+
+    Ec = 14.8*Te/1e3*A*(  f1(Ne,Z_T,X_T,a_T)
+                     + f1(Ne,Z_D,X_D,a_D)
+                     + f1(Ne,Z_He3,X_He3,a_He3))**(2/3)
+    return Ec
+
+EcD = Ecri(2,Nprf,TprfE)
+EcHe3 = Ecri(3,Nprf,TprfE)
+
+plt.figure()
+plt.plot(xP,EcHe3,label='T,He3')
+plt.plot(xP,EcD,label='D')
+plt.legend()
+plt.xlabel('R [m]')
+plt.ylabel('Critical Energy [keV]')
+
+plt.figure()
+plt.plot(xP,T_effHe3/EcHe3,label='D')
+plt.xlabel('R [m]')
+plt.ylabel(r'T$_{eff}$ / E$_{c}$')

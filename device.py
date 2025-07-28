@@ -18,7 +18,7 @@ species_dict = {
 
 #%%
 def get_device_input(name):
-    global N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont
+    global N0, N1, ap, R0, B0, xkap, del0, delt, T0e, T0i, T1, exponn, expont, Zdel
     global  RRR0, ZZZ0, Rsep0, Zsep0, rho0, Nprf0, TprfE0, TprfI0, FWR, FWZ
     FWR = []
     FWZ = []
@@ -101,6 +101,8 @@ def get_device_input(name):
         T1 = 0.8e3
         exponn = 0.7
         expont = 1.3
+        
+        Zdel=0.9
         
         from scipy.io import loadmat
         from read_gfile_func import read_gfile_func
