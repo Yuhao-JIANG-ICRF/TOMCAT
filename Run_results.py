@@ -452,9 +452,9 @@ def tail_T(Z, a, C_m, P_dens,Te,Ne):
     return T_eff
     
 # Pabs[:,i]
-T_effD = tail_T(1, 2, 0.47, Pabs[:,1]*Pow_input,TprfE,Nprf)
-T_effT = tail_T(1, 3, 0.47, Pabs[:,2]*Pow_input,TprfE,Nprf)
-T_effHe3 = tail_T(2, 3, 0.03, Pabs[:,3]*Pow_input,TprfE,Nprf)
+T_effD = tail_T(1, 2, 0.47, Pabs[:,1]*Pow_input/(2*np.pi*7.8*2.5),TprfE,Nprf)
+T_effT = tail_T(1, 3, 0.47, Pabs[:,2]*Pow_input/(2*np.pi*7.8*2.5),TprfE,Nprf)
+T_effHe3 = tail_T(2, 3, 0.03, Pabs[:,3]*Pow_input/(2*np.pi*7.8*2.5),TprfE,Nprf)
 
 
 plt.figure()
