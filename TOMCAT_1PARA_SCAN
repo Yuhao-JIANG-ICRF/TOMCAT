@@ -9,7 +9,7 @@ ZH=1  # Hydrogen
 ZHe=2  #Helium
 ZLi=3  #Lithium
 
-Zb=$ZLi
+Zb=$ZHe
 
 ####-----
 b_start=0.001

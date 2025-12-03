@@ -32,8 +32,11 @@ pref = 'output/'     #Save figures
 UNDERSCORE='_'       #For MAC
 
 if os.path.exists(pre):
-    subfolders = [item for item in os.listdir(pre)
-                  if os.path.isdir(os.path.join(pre, item))]
+    subfolders = sorted(
+        [item for item in os.listdir(pre)
+         if os.path.isdir(os.path.join(pre, item))],
+        key=lambda x: int(x)  
+    )
     
 Ncase = len(subfolders) 
 

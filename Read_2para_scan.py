@@ -32,12 +32,22 @@ UNDERSCORE='_'       #For MAC
 
 con_scan = 1
 
-if os.path.exists(pre):
-    subfolders1 = [item for item in os.listdir(pre)
-                  if os.path.isdir(os.path.join(pre, item))]
-if os.path.exists(pre+'/1'):
-    subfolders2 = [item for item in os.listdir(pre+'/1')
-                  if os.path.isdir(os.path.join(pre+'/1', item))]
+subfolders1, subfolders2 = [], []
+
+if os.path.isdir(pre):
+    subfolders1 = sorted(
+        [item for item in os.listdir(pre)
+         if os.path.isdir(os.path.join(pre, item))],
+        key=lambda x: int(x)
+    )
+
+path_1 = os.path.join(pre, '1')
+if os.path.isdir(path_1):
+    subfolders2 = sorted(
+        [item for item in os.listdir(path_1)
+         if os.path.isdir(os.path.join(path_1, item))],
+        key=lambda x: int(x)
+    )    
 Ncase1 = len(subfolders1) 
 Ncase2 = len(subfolders2)
 
@@ -133,7 +143,7 @@ def labeln(lists):
             xx = arr
             minarr = np.min(arr)
             maxarr = np.max(arr)
-            figname = lst[2]+f'_scan:{minarr}-{maxarr}'
+            figname = lst[2]+f'_scan_{minarr}-{maxarr}'
     return label, xx, delk ,figname      
     
 if con_scan==0:
@@ -204,18 +214,18 @@ for i in range(Ns):
     plt.xlabel(xlabel)
 
 
-Mtot = np.unravel_index(np.argmax(Psf[0]),Psf[0].shape)
-nMtot = tuple(x+1 for x in Mtot)
-Sumi = np.sum(Psf[2:],axis=0)
-Mi = np.unravel_index(np.argmax(Sumi),Sumi.shape)
-nMi = tuple(x+1 for x in Mi)
+Mtot = np.unravel_index(np.argmax(Psf[0]), Psf[0].shape)
+Sumi = np.sum(Psf[2:], axis=0)
+Mi   = np.unravel_index(np.argmax(Sumi), Sumi.shape)
 
-
+nMtot = tuple(int(x) + 1 for x in Mtot)
+nMi   = tuple(int(x) + 1 for x in Mi)
 
 print(f'The maximum of the total power absorption is Case {nMtot}:')
-print(f'{xaxis[Mtot[1]]},{yaxis[Mtot[0]]}, $P_{{tot}}$ = {Psf[0,Mtot[0],Mtot[1]]:.1f}%')
+print(f'{xaxis[Mtot[1]]:.2f},{yaxis[Mtot[0]]:.2f}, $P_{{tot}}$ = {Psf[0, Mtot[0], Mtot[1]]:.2f}%')
+
 print(f'The maximum of the ions power absorption is Case {nMi}:')
-print(f'{xaxis[Mi[1]]},{yaxis[Mi[0]]}, $P_{{ions}}$ = {Sumi[Mi[0],Mi[1]]:.1f}%')
+print(f'{xaxis[Mi[1]]:.2f},{yaxis[Mi[0]]:.2f}, $P_{{ions}}$ = {Sumi[Mi[0], Mi[1]]:.2f}%')
 
 # %% saving figures
 import os

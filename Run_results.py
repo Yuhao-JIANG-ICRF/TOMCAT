@@ -25,7 +25,7 @@ plt.close('all')     #close all figures
 
 pre = 'output/'
 #pre = 'output/1para_scan/22/'
-#pre = 'output/2para_scan/80/10/'
+pre = 'output/2para_scan/10/2/'
 
 pref = 'output/'     #Save figures
 UNDERSCORE='_'       #For MAC
